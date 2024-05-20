@@ -30,7 +30,6 @@ class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Length(min=6, max=40)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=25)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    role = StringField('Role', validators=[DataRequired(), Length(min=1, max=1)])
     submit = SubmitField('Register')
 
 
@@ -47,15 +46,31 @@ def login_required(f):
 @app.route('/')
 @login_required
 def home():
-    return render_template('home.html')
+    if session.get('role') == 1:
+        return redirect(url_for('home_admin'))
+    else:
+        return redirect(url_for('home_user'))
+
+
+@app.route('/home-admin')
+@login_required
+def home_admin():
+    return render_template('home_admin.html')
+
+@app.route('/home-user')
+@login_required
+def home_user():
+    return render_template('home_user.html')
 
 # تسجيل الدخول
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # التحقق مما إذا كان المستخدم مسجل الدخول بالفعل
     if 'username' in session:
-        # flash('You are already logged in!', 'info')
-        return redirect(url_for('home'))
+        if session.get('role') == 1:
+            return redirect(url_for('home_admin'))
+        else:
+            return redirect(url_for('home_user'))
+    
     form = LoginForm()
     if form.validate_on_submit():
         user = users_collection.find_one({"email": form.email.data})
@@ -63,10 +78,14 @@ def login():
             session['username'] = user['username']
             session['role'] = user['role']
             flash('Logged in successfully!', 'success')
-            return redirect(url_for('home'))
+            if user['role'] == 1:
+                return redirect(url_for('home_admin'))
+            else:
+                return redirect(url_for('home_user'))
         else:
             flash('Invalid email or password', 'danger')
     return render_template('login.html', form=form)
+
 
 
 # التسجيل
@@ -81,13 +100,14 @@ def register():
                 "username": form.username.data,
                 "email": form.email.data,
                 "password": hash_pass,
-                "role": form.role.data
+                "role": 0  # تعيين القيمة الافتراضية للحقل role إلى 0
             })
             flash('Registered successfully! Please log in.', 'success')
             return redirect(url_for('login'))
         else:
             flash('Username already exists!', 'danger')
     return render_template('register.html', form=form)
+
 
 
 # تسجيل الخروج
