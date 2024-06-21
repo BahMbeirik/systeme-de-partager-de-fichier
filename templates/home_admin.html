@@ -3,5 +3,21 @@
 {% block title %}Home Admin{% endblock %}
 
 {% block content %}
-<h1>Welcome to the home Admin page, {{ session['username'] }}!</h1>
+<div class="container">
+    <h1>Welcome {{ session['username'] }}!</h1>
+    <div class="d-flex flex-wrap  mt-4">
+        {% for category, files in categorized_files.items() %}
+        <div class="mr-2 mb-2 p-2" style="width: 200px;  background-color: rgba(241, 241, 241, 0.479); border-radius: 10px;">
+            <div style="height: 100px; border: 2px solid #0c5ef5; background-image: url('{{ url_for("static", filename="images/th.jpeg") }}');"></div>
+            <h2>{{ category }}</h2>
+            
+            <div>
+                {% for file in files %}
+                <p><a style="text-decoration: none; font-family: Georgia, serif;font-style: italic;" href="{{ url_for('download_file', file_id=file['_id']) }}" title="{{ file['nom'] }}">{{ file['short_name'] }}</a></p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

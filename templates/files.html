@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Files</title>
+</head>
+{% block content %}
+<body >
+    <div class="d-flex justify-content-between">
+        <h2>Les fichiers</h2>
+        <form action="{{ url_for('list_files') }}" method="GET" class="d-flex w-50">
+            <input class="form-control" type="text" name="query" placeholder="Search files">
+            <p class="mt-1"><button type="submit" class="btn btn-outline-primary ml-2 btn-sm">Search</button></p>
+        </form>
+    </div>
+    <div class="d-flex flex-wrap  mt-4">
+        
+        {% for file in files %}
+            
+            <div class="mr-2 mb-2 p-2" style="width: 200px; height: 215px; background-color: rgba(241, 241, 241, 0.479); border-radius: 10px;">
+                <div style="height: 100px; border: 2px solid #0c5ef5; background-image: url('{{ url_for("static", filename="images/th.jpeg") }}');"></div>
+                <p style=" font-family: Georgia, serif;font-style: italic;" title="{{ file['nom'] }}">{{ file['short_name'] }}
+                    <br><span style="font-size: smaller; font-family: Georgia, serif;font-style: italic;">Classification: {{ file['classification'] }}</span>
+                </p>
+                
+                <duv class="d-flex justify-content-between">
+                    <button class="btn btn-primary btn-sm" style="width: 70px;"><a class="text-white" style="text-decoration: none;" href="{{ url_for('download_file', file_id=file['_id']) }}">Voir</a></button>
+                    {% if session.role == 1 %}
+                    <button class="btn btn-danger btn-sm"><a class="text-white" style="text-decoration: none;" href="{{ url_for('delete_file', file_id=file['_id']) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce fichier?')">Delete</a></button>
+                    {% endif %}
+                </duv>
+            </div>
+                
+        {% endfor %}
+       
+    </div>
+    
+    
+</body>
+{% endblock %}
+</html>

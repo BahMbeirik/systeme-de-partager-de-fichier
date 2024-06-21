@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Inscription </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 </head>
 <body class="bg-light ">
     <div class="bg-white w-75 mx-auto mt-5 rounded d-flex">
         <div class="w-50 p-5 ">
-            <h1 class="text-center">Register</h1>
+            <h1 class="text-center">Inscription</h1>
             <form method="post">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
@@ -37,15 +37,7 @@
                 </div>
             </form>
            
-            {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                <ul>
-                {% for category, message in messages %}
-                  <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-                </ul>
-              {% endif %}
-            {% endwith %}
+           
         </div>
 
 

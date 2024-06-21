@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}Home User{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Les Utilisateurs</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <form action="{{ url_for('toggle_role', user_id=user._id) }}" method="POST" style="display:inline-block;">
+                            <button type="submit" class="btn btn-success">Modifier Role</button>
+                        </form>
+                        <form action="{{ url_for('delete_user', user_id=user._id) }}" method="POST" style="display:inline-block;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

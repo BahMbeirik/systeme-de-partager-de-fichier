@@ -7,12 +7,25 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-        <a class="navbar-brand" href="{{ url_for('home') }}">Systeme de partager des fiches</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
+        <a class="navbar-brand " href="{{ url_for('home') }}" style="font: small-caps bold 24px/1 sans-serif;color: hsla(237deg 74% 33% / 61%);">Systeme de partager des fichies</a>
+        <div class="collapse navbar-collapse " id="navbarNav">
+            <ul class="navbar-nav ml-auto ">
+                {% if session.get('role') == 1 %}
+                <li class="nav-item">
+                    <b><a class="nav-link" href="{{ url_for('manage_users') }}" style="margin: 0% 10%;width: 150px; font-family: Georgia, serif;font-style: italic;">Les Utilisateurs</a></b>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <b><a class="nav-link" href="{{ url_for('list_files') }}" style="margin: 0% 10%;width: 150px; font-family: Georgia, serif;font-style: italic;">Les fichiers</a></b>
+                </li>
+                {% if session.get('role') == 1 %}
+                <li class="nav-item">
+                    <b><a class="nav-link" href="{{ url_for('upload_file') }}" style="margin: 0% 10%;width: 150px; font-family: Georgia, serif;font-style: italic;">Upload file</a></b>
+                </li>
+                {% endif %}
                 {% if 'username' in session %}
                 <li class="nav-item">
-                   <a class="nav-link btn btn-danger btn-sm text-white" href="{{ url_for('logout') }}">Logout</a>
+                   <a class="nav-link btn btn-danger btn-sm text-white" href="{{ url_for('logout') }}" style="width: 150px;">Déconnecter</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
